@@ -26,10 +26,11 @@ type World struct {
 func (world *World) processWinner(winnerId string) {
 	bets := world.Bets
 	world.Bets = make([]Bet, 0)
+	winFactor := len(world.Horses)
 	for _, b := range bets {
 		if b.HorseId == winnerId {
 			// TODO(koz): Implement odds.
-			world.Players[b.PlayerId].Money += 2 * b.Amount
+			world.Players[b.PlayerId].Money += winFactor * b.Amount
 		}
 	}
 }
