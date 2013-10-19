@@ -7,6 +7,20 @@ var api = {
     request.done(function(data) {
       utils.renderPlayers(data.Players);
     });
+  },
+  placeFakeBet: function() {
+    var request = $.ajax({
+      url: "/api/placeBet",
+      type: "post",
+      data: {
+        "player": 1,
+        "horse": 1,
+        "amount": 20
+      }
+    });
+    request.done(function(data) {
+      console.log("placeBet done");
+    });
   }
 };
 
@@ -34,4 +48,10 @@ var utils = {
 $(function () {
   // Load the player data.
   api.getPlayers();
+
+  // Place fake bet button
+  $(".placeFakeBet").on("click", function(e) {
+    api.placeFakeBet();
+    e.preventDefault();
+  });
 });
