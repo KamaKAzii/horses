@@ -65,10 +65,9 @@ type RunRaceMsg struct {
 }
 
 func (world *World) runRace(w http.ResponseWriter, req *http.Request) {
-	var n int32
+	var n int
 	binary.Read(rand.Reader, binary.LittleEndian, &n)
-	x := int(n % int32(len(world.Horses)))
-
+	x := n % len(world.Horses)
 	ReplyWithJson(w, req, RunRaceMsg{strconv.Itoa(x)})
 }
 
