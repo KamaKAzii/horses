@@ -24,4 +24,4 @@ _testmain.go
 # Front end
 *.swp
 *.swo
-.vimrc
+.rvmrc
