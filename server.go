@@ -4,6 +4,7 @@ import (
 	"crypto/rand"
 	"encoding/binary"
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 	"strconv"
@@ -100,5 +101,6 @@ func main() {
 		Addr:    ":8080",
 		Handler: world,
 	}
+	fmt.Println("Listening on :8080")
 	log.Fatal(s.ListenAndServe())
 }
