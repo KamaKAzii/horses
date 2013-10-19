@@ -1,11 +1,11 @@
 var api = {
-  getPlayers: function() {
+  getWorld: function() {
     var request = $.ajax({
-      url: "/api/getPlayers",
+      url: "/api/getWorld",
       dataType: "json"
     });
     request.done(function(data) {
-      utils.renderPlayers(data.Players);
+      utils.renderWorld(data.Players, data.Horses);
     });
   },
   placeFakeBet: function() {
@@ -19,13 +19,23 @@ var api = {
       }
     });
     request.done(function(data) {
-      console.log("placeBet done");
+    });
+  },
+  runRace: function() {
+    var request = $.ajax({
+      url: "/api/runRace",
+      type: "post"
+    });
+    request.always(function(data) {
+      // utils.animateRaceResults(data.Results);
+      utils.animateRaceResults([1, 4, 3, 2]);
     });
   }
 };
 
 var utils = {
-  renderPlayers: function(players) {
+  renderWorld: function(players, horses) {
+    // Render players
     var $players = $(".players").empty();
     var $playerUl = $("<ul>");
     $.each(players, function(playerNumber, player) {
@@ -42,16 +52,69 @@ var utils = {
       $playerUl.append($playerLi);
     });
     $players.append($playerUl);
+
+    // Render horses
+    var $racecourse = $(".racecourse").empty();
+    var $racecourseUl = $("<ul>");
+    $.each(horses, function(index, value) {
+      var $horseLi = $("<li>");
+      var $nameSpan = $("<span>")
+        .html(value.Name)
+        .addClass("name");
+      var $horseSpan = $("<span>")
+        .addClass("horse")
+        .data("id",  value.Id);
+      $horseLi.append($horseSpan).append($nameSpan);
+      $racecourseUl.append($horseLi);
+    });
+    $racecourse.append($racecourseUl);
+
+  },
+  animateRaceResults: function(resultSet) {
+    var $horses = $(".horse");
+
+    $.each(resultSet, function(index, value) {
+
+      var position = index + 1;
+      var baseTime = 7000;
+      var targetId = value;
+
+      $horses.each(function() {
+        var $currentHorse = $(this);
+        if ($currentHorse.data("id") == targetId) {
+          $currentHorse.animate(
+            { left: "100%" },
+            {
+              duration: baseTime + (position * 500),
+              complete: function() {
+                if (position == resultSet.length) {
+                  setTimeout(function() { api.getWorld(); }, 1000);
+                }
+              }
+            }
+          );
+        }
+      });
+
+    });
+
   }
 };
 
 $(function () {
-  // Load the player data.
-  api.getPlayers();
-
   // Place fake bet button
   $(".placeFakeBet").on("click", function(e) {
     api.placeFakeBet();
     e.preventDefault();
   });
+  
+  // Load the world data
+  api.getWorld();
+
+  // Race button
+  $("button.race").on("click", function(e) {
+    api.runRace();
+    e.preventDefault();
+  });
+
 });

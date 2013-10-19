@@ -80,13 +80,21 @@ body {
   display: block;
   border-bottom: 1px solid black;
   position: relative;
-  height: 20px;
+  height: 24px;
 }
 /* line 21, ../../sass/screen.sass */
 .racecourse li:last-child {
   border-bottom: none;
 }
 /* line 23, ../../sass/screen.sass */
+.racecourse .name {
+  position: absolute;
+  line-height: 24px;
+  right: 0;
+  top: 0;
+  color: #cccccc;
+}
+/* line 29, ../../sass/screen.sass */
 .racecourse .horse {
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
@@ -98,11 +106,11 @@ body {
   width: 20px;
   height: 20px;
   position: absolute;
-  top: 0;
+  top: 2px;
   left: 0;
 }
 
-/* line 33, ../../sass/screen.sass */
+/* line 39, ../../sass/screen.sass */
 .players {
   *zoom: 1;
 }
@@ -112,13 +120,13 @@ body {
   display: table;
   clear: both;
 }
-/* line 35, ../../sass/screen.sass */
+/* line 41, ../../sass/screen.sass */
 .players .player {
   display: inline;
   float: left;
   margin-right: 8px;
 }
-/* line 38, ../../sass/screen.sass */
+/* line 44, ../../sass/screen.sass */
 .players .player dt {
   font-weight: bold;
 }
