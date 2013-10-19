@@ -46,9 +46,9 @@ func (world *World) getPlayers(w http.ResponseWriter, req *http.Request) {
 func (world *World) placeBet(w http.ResponseWriter, req *http.Request) {
 	req.ParseForm()
 	log.Print(req.Form)
-	player_id := req.Form["Player"][0]
-	horse_id := req.Form["Horse"][0]
-	amount, err := strconv.Atoi(req.Form["Amount"][0])
+	player_id := req.Form["player"][0]
+	horse_id := req.Form["horse"][0]
+	amount, err := strconv.Atoi(req.Form["amount"][0])
 	if err != nil {
 		http.Error(w, "fail", 500)
 		return
