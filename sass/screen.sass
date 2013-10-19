@@ -1,0 +1,39 @@
+@import "compass/reset"
+@import "compass/utilities/general"
+@import "compass/css3"
+
+$line: 16px
+$gutter: 8px
+
+body
+  font-family: Helvetica, Arial, sans-serif
+  margin: $gutter
+
+.racecourse
+  border-top: 1px solid black
+  border-bottom: 1px solid black
+  margin-bottom: $line
+  li
+    display: block
+    border-bottom: 1px solid black
+    position: relative
+    height: 20px
+    &:last-child
+      border-bottom: none
+  .horse
+    +border-radius(10px)
+    background: #ccc
+    display: block
+    width: 20px
+    height: 20px
+    position: absolute
+    top: 0
+    left: 0
+    
+.players
+  +pie-clearfix
+  .player
+    +float(left)
+    margin-right: $gutter
+    dt
+      font-weight: bold
