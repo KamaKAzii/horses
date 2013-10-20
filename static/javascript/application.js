@@ -21,7 +21,7 @@ var api = {
       $(".error span").html(data.responseText);
       setTimeout(function() {
         $(".error span").slideUp("slow", function() {
-          $(this).empty();
+          $(this).empty().show();
         });
       }, 2000);
     });
