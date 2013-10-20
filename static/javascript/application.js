@@ -17,6 +17,14 @@ var api = {
     request.done(function(data) {
       api.getWorld();
     });
+    request.fail(function(data) {
+      $(".error span").html(data.responseText);
+      setTimeout(function() {
+        $(".error span").slideUp("slow", function() {
+          $(this).empty();
+        });
+      }, 2000);
+    });
   },
   runRace: function() {
     var request = $.ajax({

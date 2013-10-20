@@ -34,7 +34,7 @@ func (s *WorldServer) placeBet(w http.ResponseWriter, req *http.Request) {
 	horseId := req.Form["horse"][0]
 	amount, err := strconv.Atoi(req.Form["amount"][0])
 	if err != nil {
-		http.Error(w, "fail", 500)
+		http.Error(w, "Enter an amount before placing a bet.", 500)
 		return
 	}
 	s.world.placeBet(playerId, horseId, amount)
