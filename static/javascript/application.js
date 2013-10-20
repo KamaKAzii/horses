@@ -8,27 +8,24 @@ var api = {
       utils.renderWorld(data.Players, data.Horses);
     });
   },
-  placeFakeBet: function() {
+  placeBet: function($form) {
     var request = $.ajax({
       url: "/api/placeBet",
       type: "post",
-      data: {
-        "player": 1,
-        "horse": 1,
-        "amount": 20
-      }
+      data: $form.serialize()
     });
     request.done(function(data) {
+      api.getWorld();
     });
   },
   runRace: function() {
     var request = $.ajax({
       url: "/api/runRace",
-      type: "post"
+      type: "post",
+      dataType: "json"
     });
-    request.always(function(data) {
-      // utils.animateRaceResults(data.Results);
-      utils.animateRaceResults([1, 4, 3, 2]);
+    request.done(function(data) {
+      utils.animateRaceResults(data.RaceOrder);
     });
   }
 };
@@ -53,6 +50,48 @@ var utils = {
     });
     $players.append($playerUl);
 
+    // Render betting forms
+    var $bets = $(".bets").empty();
+    var $horsesSelect = $("<select>")
+      .attr("name", "horse");
+
+    $.each(horses, function(index, horse) {
+      var $opt = $("<option>")
+        .html(horse.Name)
+        .attr("value", horse.Id);
+      $horsesSelect.append($opt);
+    });
+    $.each(players, function(index, player) {
+      var $form = $("<form>");
+      var $inputAmount = $("<input>")
+        .attr({
+          "name": "amount",
+          "placeholder": "Amount"
+        });
+      var $playerIdHidden = $("<input>")
+        .attr({
+          "type": "hidden",
+          "name": "player",
+          "value": player.Id,
+        });
+      var $submit = $("<button>")
+        .html("Place Bet for " + player.Name)
+        .addClass("placeBet");
+
+      $form.append($horsesSelect.clone());
+      $form.append($playerIdHidden);
+      $form.append($inputAmount);
+      $form.append($submit);
+
+      $bets.append($form);
+
+      // Hook up form events
+      $submit.on("click", function(e) {
+        api.placeBet($form);
+        e.preventDefault();
+      });
+    });
+
     // Render horses
     var $racecourse = $(".racecourse").empty();
     var $racecourseUl = $("<ul>");
@@ -72,12 +111,13 @@ var utils = {
   },
   animateRaceResults: function(resultSet) {
     var $horses = $(".horse");
+    console.log(resultSet);
 
     $.each(resultSet, function(index, value) {
 
       var position = index + 1;
       var baseTime = 7000;
-      var targetId = value;
+      var targetId = parseInt(value);
 
       $horses.each(function() {
         var $currentHorse = $(this);
@@ -102,12 +142,6 @@ var utils = {
 };
 
 $(function () {
-  // Place fake bet button
-  $(".placeFakeBet").on("click", function(e) {
-    api.placeFakeBet();
-    e.preventDefault();
-  });
-  
   // Load the world data
   api.getWorld();
 
